@@ -21,17 +21,22 @@ public class PlayerController : MonoBehaviour
         h = Input.GetAxisRaw("Horizontal");
         v = Input.GetAxisRaw("Vertical");
         _dir = new Vector3(h, 0, v);
+
+        _dir = Camera.main.transform.TransformDirection(_dir);
+        // カメラは斜め下に向いているので、Y 軸の値を 0 にして「XZ 平面上のベクトル」にする
+        _dir.y = 0;
         Move();
         Jump();
     }
-
+    private void FixedUpdate()
+    {
+       
+    }
     void Move()
     {
         float speed = _dir == Vector3.zero ? 0 : _speed;
 
-        //_animationspeed = Mathf.Lerp(_animationspeed, speed, Time.deltaTime * 5f);
-
-        _rb.AddForce(_dir.normalized * speed, ForceMode.Force);
+        _rb.velocity = _dir.normalized * speed;
     }
 
     void Jump()
