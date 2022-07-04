@@ -1846,7 +1846,7 @@ GameObject:
   - component: {fileID: 1123854434}
   m_Layer: 0
   m_Name: Anahi
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3428,7 +3428,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 5
-  _jumpPower: 10
+  _jumpPower: 6
+  _isGroundedLength: 0.4
+  _gravityPower: 0.98
 --- !u!4 &1123854435
 Transform:
   m_ObjectHideFlags: 0
