@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _jumpPower = 5f;
     [SerializeField] float _isGroundedLength = 1.1f;
     [SerializeField] float _gravityPower = 0.93f;
+    [SerializeField] float _turnSpeed = 2f;
+    [SerializeField] int _jumpMaxCount = 2;
+    int _jumpCount = 0;
     float h, v = 0;
     Vector3 _dir;
     Rigidbody _rb;
@@ -27,12 +30,18 @@ public class PlayerController : MonoBehaviour
         _dir = Camera.main.transform.TransformDirection(_dir);
         // カメラは斜め下に向いているので、Y 軸の値を 0 にして「XZ 平面上のベクトル」にする
         _dir.y = 0;
-        Move();
+        if (_dir != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(_dir);
+            this.transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, Time.deltaTime * _turnSpeed);
+        }
+
+
         Jump();
     }
     private void FixedUpdate()
     {
-
+        Move();
     }
     void Move()
     {
@@ -53,26 +62,31 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        Vector3 velosity = _rb.velocity;
-
-        if (IsGround())
+        if (IsGround() && _jumpCount > 0)
         {
-            if (Input.GetButtonDown("Jump"))
-            {
-                _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
-            }
-            else if (velosity.y > 0)
-                velosity.y *= _gravityPower;
+            _jumpCount = 0;
         }
 
-        _rb.velocity = velosity;
+        Vector3 velocity = _rb.velocity;
+
+        if (Input.GetButtonDown("Jump") && _jumpCount < _jumpMaxCount - 1)
+        {
+            _jumpCount++;
+            velocity.y = _jumpPower;
+            _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+        }
+
+        if (velocity.y > 0)
+            velocity.y *= _gravityPower;
+
+        _rb.velocity = velocity;
     }
 
     bool IsGround()
     {
         Vector3 start = this.transform.position;   // start: オブジェクトの Pivot
         Vector3 end = start + Vector3.down * _isGroundedLength;  // end: start から真下の地点
-        Debug.DrawLine(start, end); // 動作確認用に Scene ウィンドウ上で線を表示する
+        Debug.DrawLine(start, end, Color.red); // 動作確認用に Scene ウィンドウ上で線を表示する
         bool isGrounded = Physics.Linecast(start, end); // 引いたラインに何かがぶつかっていたら true とする
         return isGrounded;
     }
