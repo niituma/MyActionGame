@@ -55,15 +55,14 @@ public class PlayerController : MonoBehaviour
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
-            _animSpeed = 0;
         }
         else
         {
             Vector3 velo = _dir.normalized * speed;
-            _animSpeed = Mathf.Lerp(_animSpeed, speed, Time.deltaTime);
             velo.y = _rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             _rb.velocity = velo;   // 計算した速度ベクトルをセットする
         }
+        _animSpeed = Mathf.Lerp(_animSpeed, speed, Time.deltaTime * 5);
     }
 
     void Jump()
