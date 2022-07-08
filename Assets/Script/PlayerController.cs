@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float _speed = 5f;
+    [SerializeField] float _walkSpeed = 5f;
+    [SerializeField] float _runSpeed = 10f;
+    float _animSpeed = 0f;
     [SerializeField] float _jumpPower = 5f;
     [SerializeField] float _isGroundedLength = 1.1f;
     [SerializeField] float _gravityPower = 0.93f;
@@ -14,6 +16,9 @@ public class PlayerController : MonoBehaviour
     float h, v = 0;
     Vector3 _dir;
     Rigidbody _rb;
+
+    public float AnimSpeed { get => _animSpeed; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,19 +50,20 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
-        float speed = _dir == Vector3.zero ? 0 : _speed;
+        float speed = _dir == Vector3.zero ? 0 : _walkSpeed;
         if (_dir == Vector3.zero)
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
             _rb.velocity = new Vector3(0f, _rb.velocity.y, 0f);
+            _animSpeed = 0;
         }
         else
         {
             Vector3 velo = _dir.normalized * speed;
+            _animSpeed = Mathf.Lerp(_animSpeed, speed, Time.deltaTime);
             velo.y = _rb.velocity.y;   // ジャンプした時の y 軸方向の速度を保持する
             _rb.velocity = velo;   // 計算した速度ベクトルをセットする
         }
-
     }
 
     void Jump()
@@ -82,7 +88,7 @@ public class PlayerController : MonoBehaviour
         _rb.velocity = velocity;
     }
 
-    bool IsGround()
+    public bool IsGround()
     {
         Vector3 start = this.transform.position;   // start: オブジェクトの Pivot
         Vector3 end = start + Vector3.down * _isGroundedLength;  // end: start から真下の地点
