@@ -16,5 +16,11 @@ public class PlayerAnimationController : MonoBehaviour
     private void LateUpdate()
     {
         _anim.SetFloat("Speed", _playermove.AnimSpeed);
+        _anim.SetBool("Ground", _playermove.IsGround());
+        if (_playermove.IsGround() && Input.GetButtonDown("Jump"))
+        {
+            _anim.SetTrigger("Jump");
+            _playermove.IsJump = false;
+        }
     }
 }

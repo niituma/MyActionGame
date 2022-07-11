@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _gravityPower = 0.93f;
     [SerializeField] float _turnSpeed = 2f;
     [SerializeField] int _jumpMaxCount = 2;
+    public bool IsJump { get; set; } = false;
     int _jumpCount = 0;
     float h, v = 0;
     Vector3 _dir;
@@ -74,11 +75,15 @@ public class PlayerController : MonoBehaviour
 
         Vector3 velocity = _rb.velocity;
 
-        if (Input.GetButtonDown("Jump") && _jumpCount < _jumpMaxCount - 1)
+        if (_jumpCount < _jumpMaxCount - 1)
         {
-            _jumpCount++;
-            velocity.y = _jumpPower;
-            _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+            if (Input.GetButtonDown("Jump"))
+            {
+                IsJump = true;
+                _jumpCount++;
+                velocity.y = _jumpPower;
+                _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+            }
         }
 
         if (velocity.y > 0)
