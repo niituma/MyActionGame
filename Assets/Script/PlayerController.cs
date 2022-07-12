@@ -7,33 +7,32 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _walkSpeed = 5f;
     [SerializeField] float _runSpeed = 10f;
     float _animSpeed = 0f;
+    public float AnimSpeed { get => _animSpeed; }
     [SerializeField] float _jumpPower = 5f;
     [SerializeField] float _isGroundedLength = 1.1f;
     [SerializeField] float _gravityPower = 0.93f;
     [SerializeField] float _turnSpeed = 2f;
     [SerializeField] int _jumpMaxCount = 2;
-    [SerializeField]
-    bool _dash = false;
-    public bool IsJump { get; set; } = false;
     int _jumpCount = 0;
-    float h, v = 0;
+    bool _noJump;
     Vector3 _dir;
-    Rigidbody _rb;
 
-    public float AnimSpeed { get => _animSpeed; }
+    InputManager _input;
+    PlayerAnimController _playeranim;
+    Rigidbody _rb;
 
     // Start is called before the first frame update
     void Start()
     {
+        _playeranim = GetComponent<PlayerAnimController>();
         _rb = GetComponent<Rigidbody>();
+        _input = GetComponent<InputManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        h = Input.GetAxisRaw("Horizontal");
-        v = Input.GetAxisRaw("Vertical");
-        _dir = new Vector3(h, 0, v);
+        _dir = new Vector3(_input._move.x, 0, _input._move.y);
 
         _dir = Camera.main.transform.TransformDirection(_dir);
         // カメラは斜め下に向いているので、Y 軸の値を 0 にして「XZ 平面上のベクトル」にする
@@ -55,7 +54,7 @@ public class PlayerController : MonoBehaviour
     {
         float speed =
             _dir == Vector3.zero ? 0
-            : _dash ? _runSpeed
+            : _input._dash ? _runSpeed
             : _walkSpeed;
         if (_dir == Vector3.zero)
         {
@@ -73,28 +72,44 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if (IsGround() && _jumpCount > 0)
+        if (IsGround())
         {
-            _jumpCount = 0;
+            if (_jumpCount > 0) { _jumpCount = 0; }
+
+            if (_noJump) { _input.JumpInput(false); }
         }
 
         Vector3 velocity = _rb.velocity;
 
         if (_jumpCount < _jumpMaxCount - 1)
         {
-            if (Input.GetButtonDown("Jump"))
+            if (_input._jump && !_noJump)
             {
-                IsJump = true;
+                _playeranim.JumpAnim();
                 _jumpCount++;
                 velocity.y = _jumpPower;
                 _rb.AddForce(Vector3.up * _jumpPower, ForceMode.Impulse);
+                _input.JumpInput(false);
             }
+        }
+        else
+        {
+            if (_input._jump) { _input.JumpInput(false); }
         }
 
         if (velocity.y > 0)
             velocity.y *= _gravityPower;
 
         _rb.velocity = velocity;
+    }
+
+    void JumpReady()
+    {
+        _noJump = false;
+    }
+    void NoJump()
+    {
+        _noJump = true;
     }
 
     public bool IsGround()

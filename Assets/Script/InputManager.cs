@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
 	[Header("Character Input Values")]
-	public Vector2 move;
-	public bool attack;
-	public bool jump;
+	public Vector2 _move;
+	public bool _attack;
+	public bool _jump;
+	public bool _dash;
 
-
-#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
+#if ENABLE_INPUT_SYSTEM
 	public void OnMove(InputValue value)
 	{
 		MoveInput(value.Get<Vector2>());
@@ -20,38 +19,13 @@ public class InputManager : MonoBehaviour
 	{
 		JumpInput(value.isPressed);
 	}
-	public void OnChange(InputValue value)
-	{
-		ChangeInput(value.isPressed);
-	}
-	public void OnLockOn(InputValue value)
-	{
-		LockOnInput(value.isPressed);
-	}
-	public void OnAvd(InputValue value)
-	{
-		AvdInput(value.isPressed);
-	}
 	public void OnAttack(InputValue value)
 	{
 		AttackInput(value.isPressed);
 	}
-	public void OnFire(InputValue value)
+	public void OnDash(InputValue value)
 	{
-		FireInput(value.isPressed);
-	}
-
-	public void OnSprint(InputValue value)
-	{
-		SprintInput(value.isPressed);
-	}
-	public void OnAim(InputValue value)
-	{
-		AimInput(value.isPressed);
-	}
-	public void OnShoot(InputValue value)
-	{
-		ShootInput(value.isPressed);
+		DashInput(value.isPressed);
 	}
 #else
 	// old input sys if we do decide to have it (most likely wont)...
@@ -60,15 +34,19 @@ public class InputManager : MonoBehaviour
 
 	public void MoveInput(Vector2 newMoveDirection)
 	{
-		move = newMoveDirection;
+		_move = newMoveDirection;
 	}
 
 	public void JumpInput(bool newJumpState)
 	{
-		jump = newJumpState;
+		_jump = newJumpState;
 	}
 	public void AttackInput(bool newJumpState)
 	{
-		attack = newJumpState;
+		_attack = newJumpState;
+	}
+	public void DashInput(bool newDashState)
+	{
+		_dash = newDashState;
 	}
 }

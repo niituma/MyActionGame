@@ -1889,6 +1889,7 @@ GameObject:
   - component: {fileID: 1123854436}
   - component: {fileID: 1123854434}
   - component: {fileID: 1123854440}
+  - component: {fileID: 1123854444}
   - component: {fileID: 1123854442}
   m_Layer: 0
   m_Name: Player
@@ -3480,6 +3481,7 @@ MonoBehaviour:
   _gravityPower: 0.98
   _turnSpeed: 10
   _jumpMaxCount: 2
+  _dash: 0
 --- !u!4 &1123854435
 Transform:
   m_ObjectHideFlags: 0
@@ -3629,6 +3631,22 @@ Transform:
   m_Father: {fileID: 1123854343}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1123854444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123759169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0097b03cecb94448b6f69bb860372e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  move: {x: 0, y: 0}
+  attack: 0
+  jump: 0
+  analogMovement: 0
 --- !u!4 &1123854445
 Transform:
   m_ObjectHideFlags: 0
