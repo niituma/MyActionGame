@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float _gravityPower = 0.93f;
     [SerializeField] float _turnSpeed = 2f;
     [SerializeField] int _jumpMaxCount = 2;
+    [SerializeField]
+    bool _dash = false;
     public bool IsJump { get; set; } = false;
     int _jumpCount = 0;
     float h, v = 0;
@@ -51,7 +53,10 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
-        float speed = _dir == Vector3.zero ? 0 : _walkSpeed;
+        float speed =
+            _dir == Vector3.zero ? 0
+            : _dash ? _runSpeed
+            : _walkSpeed;
         if (_dir == Vector3.zero)
         {
             // 方向の入力がニュートラルの時は、y 軸方向の速度を保持するだけ
