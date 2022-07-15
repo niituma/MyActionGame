@@ -26,4 +26,9 @@ public class PlayerAnimController : MonoBehaviour
     {
         _anim.SetTrigger("Jump");
     }
+
+    public void AttackAnim()
+    {
+        _anim.SetTrigger("Attack");
+    }
 }
