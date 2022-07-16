@@ -19,12 +19,14 @@ public class PlayerController : MonoBehaviour
 
     InputManager _input;
     PlayerAnimController _playeranim;
+    PlayerAttackController _attack;
     Rigidbody _rb;
 
     // Start is called before the first frame update
     void Start()
     {
         _playeranim = GetComponent<PlayerAnimController>();
+        _attack = GetComponent<PlayerAttackController>();
         _rb = GetComponent<Rigidbody>();
         _input = GetComponent<InputManager>();
     }
@@ -52,6 +54,13 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
+        if (_attack.Isattack)
+        {
+            _rb.velocity = Vector3.zero;
+            _animSpeed = 0;
+            return;
+        }
+
         float speed =
             _dir == Vector3.zero ? 0
             : _input._dash ? _runSpeed

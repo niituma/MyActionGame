@@ -6,10 +6,15 @@ public class PlayerAttackController : MonoBehaviour
 {
     InputManager _input;
     PlayerAnimController _playeranim;
+    PlayerController _playercontroller;
     bool _isattack = false;
+
+    public bool Isattack { get => _isattack;}
+
     // Start is called before the first frame update
     void Start()
     {
+        _playercontroller = GetComponent<PlayerController>();
         _playeranim = GetComponent<PlayerAnimController>();
         _input = GetComponent<InputManager>();
     }
@@ -21,6 +26,12 @@ public class PlayerAttackController : MonoBehaviour
 
         if (_input._attack && !_isattack)
         {
+            if (!_playercontroller.IsGround())
+            {
+                _input.AttackInput(false);
+                return;
+            }
+
             _isattack = true;
             _playeranim.AttackAnim();
             _input.AttackInput(false);
