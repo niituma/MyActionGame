@@ -54,7 +54,7 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
-        if (_attack.Isattack)
+        if (!_attack.CanAttack)
         {
             _rb.velocity = Vector3.zero;
             _animSpeed = 0;

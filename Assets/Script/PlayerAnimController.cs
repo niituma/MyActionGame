@@ -17,6 +17,7 @@ public class PlayerAnimController : MonoBehaviour
     {
         _anim.SetFloat("Speed", _playermove.AnimSpeed);
         _anim.SetBool("Ground", _playermove.IsGround());
+        _anim.SetFloat("StateTime", Mathf.Repeat(_anim.GetCurrentAnimatorStateInfo(0).normalizedTime, 1f));
     }
 
     /// <summary>

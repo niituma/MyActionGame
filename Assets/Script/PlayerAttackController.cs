@@ -7,9 +7,10 @@ public class PlayerAttackController : MonoBehaviour
     InputManager _input;
     PlayerAnimController _playeranim;
     PlayerController _playercontroller;
-    bool _isattack = false;
+    bool _canAttack = true;
+    bool _endAttack = false;
 
-    public bool Isattack { get => _isattack;}
+    public bool CanAttack { get => _canAttack; }
 
     // Start is called before the first frame update
     void Start()
@@ -22,23 +23,36 @@ public class PlayerAttackController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_isattack) { _input.AttackInput(false); }
-
-        if (_input._attack && !_isattack)
+        if (_input._attack)
         {
-            if (!_playercontroller.IsGround())
+            if (_canAttack)
+            {
+                if (!_playercontroller.IsGround())
+                {
+                    _input.AttackInput(false);
+                    return;
+                }
+
+                _canAttack = false;
+                _playeranim.AttackAnim();
+                _input.AttackInput(false);
+            }
+            else
             {
                 _input.AttackInput(false);
-                return;
+                if (_endAttack) { return; }
+                _playeranim.AttackAnim();
             }
-
-            _isattack = true;
-            _playeranim.AttackAnim();
-            _input.AttackInput(false);
         }
     }
     void AttackReady()
     {
-        _isattack = false;
+        _canAttack = true;
+        _endAttack = false;
+    }
+
+    void EndAttack()
+    {
+        _endAttack = true;
     }
 }
