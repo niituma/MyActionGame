@@ -5,12 +5,12 @@ using UnityEngine;
 public class PlayerAnimController : MonoBehaviour
 {
     Animator _anim;
-    PlayerController _playermove;
+    PlayerMoveController _playermove;
     // Start is called before the first frame update
     void Start()
     {
         _anim = GetComponent<Animator>();
-        _playermove = GetComponent<PlayerController>();
+        _playermove = GetComponent<PlayerMoveController>();
     }
 
     private void LateUpdate()

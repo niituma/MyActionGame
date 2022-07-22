@@ -9,10 +9,10 @@ public class TestSword : MonoBehaviour
     GameObject _HitEff;
     [SerializeField]
     string _hitObjTag;
-    PlayerController _player;
+    PlayerMoveController _player;
     private void Start()
     {
-        _player = FindObjectOfType<PlayerController>();
+        _player = FindObjectOfType<PlayerMoveController>();
     }
     private void OnTriggerEnter(Collider other)
     {

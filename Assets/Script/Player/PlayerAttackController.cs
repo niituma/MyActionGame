@@ -6,7 +6,9 @@ public class PlayerAttackController : MonoBehaviour
 {
     InputManager _input;
     PlayerAnimController _playeranim;
-    PlayerController _playercontroller;
+    PlayerMoveController _playercontroller;
+    [SerializeField]
+    GameObject _weapon;
     bool _canAttack = true;
     bool _endAttack = false;
 
@@ -15,7 +17,7 @@ public class PlayerAttackController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _playercontroller = GetComponent<PlayerController>();
+        _playercontroller = GetComponent<PlayerMoveController>();
         _playeranim = GetComponent<PlayerAnimController>();
         _input = GetComponent<InputManager>();
     }
@@ -49,6 +51,7 @@ public class PlayerAttackController : MonoBehaviour
     {
         _canAttack = true;
         _endAttack = false;
+        _weapon.SetActive(false);
     }
 
     void EndAttack()

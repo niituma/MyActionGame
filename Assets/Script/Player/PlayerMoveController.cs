@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMoveController : MonoBehaviour
 {
     [SerializeField] float _walkSpeed = 5f;
     [SerializeField] float _runSpeed = 10f;
