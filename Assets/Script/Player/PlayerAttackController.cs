@@ -41,6 +41,12 @@ public class PlayerAttackController : MonoBehaviour
             }
             else
             {
+                if (!_playercontroller.IsGround())
+                {
+                    _input.AttackInput(false);
+                    return;
+                }
+
                 _input.AttackInput(false);
                 if (_endAttack) { return; }
                 _playeranim.AttackAnim();
@@ -52,6 +58,7 @@ public class PlayerAttackController : MonoBehaviour
         _canAttack = true;
         _endAttack = false;
         _weapon.SetActive(false);
+        _playeranim?.AnimUpdateModeNormal();
     }
 
     void EndAttack()

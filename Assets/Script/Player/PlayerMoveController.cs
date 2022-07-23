@@ -39,6 +39,11 @@ public class PlayerMoveController : MonoBehaviour
         _dir = Camera.main.transform.TransformDirection(_dir);
         // カメラは斜め下に向いているので、Y 軸の値を 0 にして「XZ 平面上のベクトル」にする
         _dir.y = 0;
+        if (!_playeranim.AnimMoveMode())
+        {
+            _dir = Vector3.zero;
+        }
+
         if (_dir != Vector3.zero)
         {
             Quaternion targetRotation = Quaternion.LookRotation(_dir);
@@ -85,7 +90,7 @@ public class PlayerMoveController : MonoBehaviour
         {
             if (_jumpCount > 0) { _jumpCount = 0; }
 
-            if (_noJump) { _input.JumpInput(false); }
+            if (_noJump || !_playeranim.AnimMoveMode()) { _input.JumpInput(false); }
         }
 
         Vector3 velocity = _rb.velocity;

@@ -31,5 +31,14 @@ public class PlayerAnimController : MonoBehaviour
     public void AttackAnim()
     {
         _anim.SetTrigger("Attack");
+        _anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
+    }
+    public bool AnimMoveMode()
+    {
+        return _anim.updateMode == AnimatorUpdateMode.Normal;
+    }
+    public void AnimUpdateModeNormal()
+    {
+        _anim.updateMode = AnimatorUpdateMode.Normal;
     }
 }
